@@ -19,34 +19,55 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+@Component
 public class DataSeeder implements CommandLineRunner {
 
-    // private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
     // private final ArtistRepository artistRepository;
     // private final EventRepository eventRepository;
 
     @Override
     public void run(String... args) throws Exception {
-
-
-
+        InputStream inputStream = new ClassPathResource("data/music-data-2024.json").getInputStream();
+        JsonDataWrapper jsonDataWrapper = objectMapper.readValue(inputStream, JsonDataWrapper.class);
+        System.out.println(jsonDataWrapper);
     }
 
     // to-do
-    record JsonDataWrapper() {
+    record JsonDataWrapper(List<ArtistDto> artists,
+                           List<EventDto> events) {
     }
 
     // to-do
-    record ArtistDto() {
+    record ArtistDto(
+            long artistId,
+            String firstname,
+            String lastname,
+            String description,
+            String imageUrl
+    ) {
     }
 
     // to-do
-    record EventDto() {
+    record EventDto(
+            long eventId,
+            String title,
+            String description,
+            String location,
+            LocalDateTime begin,
+            LocalDateTime end,
+            String imageUrl,
+            String artistIds,
+            List<RatingDto> ratings
+    ) {
     }
 
     // to-do
-    record RatingDto() {
+    record RatingDto(
+            long ratingId,
+            int stars,
+            String comment
+    ) {
     }
 
 }
